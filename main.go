@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/kiosk123/golang/banking"
 	"github.com/kiosk123/golang/dict"
@@ -104,4 +105,24 @@ func main() {
 	}
 
 	// -- URL checker --
+
+	// -- go routine test --
+	// go 루틴은 메인함수가 실행될 돌안만 유효 - 메인 스레드는 무조건 하나 살아있어야함
+	go sexyCount("nico")
+	sexyCount("flynn")
+
+	fmt.Println("--------------------------------")
+
+	go sexyCount("cat")
+	go sexyCount("dog")
+	time.Sleep(time.Second * 10)
+	// -- go routine test --
+}
+
+// -- go routine --
+func sexyCount(person string) {
+	for i := 0; i < 10; i++ {
+		fmt.Println(person, "is sexy", i)
+		time.Sleep((time.Second))
+	}
 }
