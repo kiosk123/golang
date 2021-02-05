@@ -117,6 +117,25 @@ func main() {
 	go sexyCount("dog")
 	time.Sleep(time.Second * 10) // main이 먼저 종료되는 문제 예방
 	// -- go routine test --
+
+	// -- channel --
+	c := make(chan bool) // create channel
+	people := [2]string{"nico", "flynn"}
+	for _, person := range people {
+		go isSexy(person, c)
+	}
+
+	result := <-c //채널로 부터 메시지를 받음
+	fmt.Println(result)
+
+	result = <-c // 메시지가 두개라면 두번째 메시지 받아서 처리
+	fmt.Println(result)
+
+	// result = <-c //go 루틴 두개에서 보내는 메시지가 총 두개인데 한번더 호출시 데드락
+	// fmt.Println(result)
+
+	time.Sleep(time.Second * 10)
+	// -- channel --
 }
 
 // -- go routine --
@@ -125,4 +144,10 @@ func sexyCount(person string) {
 		fmt.Println(person, "is sexy", i)
 		time.Sleep((time.Second))
 	}
+}
+
+// -- channel은 메인과 go routine과 데이터를 주고 받을 수 있음
+func isSexy(person string, c chan bool) {
+	time.Sleep(time.Second * 5)
+	c <- true //channel에 true값을 보냄
 }
