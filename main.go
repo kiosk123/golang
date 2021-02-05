@@ -115,7 +115,7 @@ func main() {
 
 	go sexyCount("cat")
 	go sexyCount("dog")
-	time.Sleep(time.Second * 10)
+	time.Sleep(time.Second * 10) // main이 먼저 종료되는 문제 예방
 	// -- go routine test --
 }
 
