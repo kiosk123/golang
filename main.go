@@ -66,5 +66,15 @@ func main() {
 	if err != nil {
 		fmt.Println(hello)
 	}
+
+	err = dictionary.Update("rank", "third")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = dictionary.Delete("hello")
+	if err != nil {
+		fmt.Println(err)
+	}
 	// -- Dictionary --
 }
