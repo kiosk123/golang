@@ -5,6 +5,7 @@ import (
 
 	"github.com/kiosk123/golang/banking"
 	"github.com/kiosk123/golang/dict"
+	"github.com/kiosk123/golang/urlcheker"
 )
 
 func main() {
@@ -77,4 +78,22 @@ func main() {
 		fmt.Println(err)
 	}
 	// -- Dictionary --
+
+	// -- URL checker --
+	urls := []string{
+		"https://www.naver.com",
+		"https://www.daum.net/",
+		"https://www.nate.com/",
+		"https://www.saramin.co.kr/zf_user/",
+		"https://github.com/",
+	}
+
+	for _, url := range urls {
+		err = urlcheker.HitURL(url)
+		if err != nil {
+			fmt.Println(url, "is not hit")
+		}
+	}
+
+	// -- URL checker --
 }
