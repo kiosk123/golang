@@ -88,11 +88,19 @@ func main() {
 		"https://github.com/",
 	}
 
+	var results = make(map[string]string)
+
 	for _, url := range urls {
+		result := "OK"
 		err = urlcheker.HitURL(url)
 		if err != nil {
-			fmt.Println(url, "is not hit")
+			result = "FAILED"
 		}
+		results[url] = result
+	}
+
+	for url, result := range results {
+		fmt.Println("Checking :", url, "Result :", result)
 	}
 
 	// -- URL checker --
