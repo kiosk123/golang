@@ -11,7 +11,7 @@ type result struct {
 }
 
 // example
-func Example() {
+func Main() {
 	urls := []string{
 		"https://www.naver.com",
 		"https://www.daum.net/",

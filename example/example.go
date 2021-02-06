@@ -10,7 +10,7 @@ import (
 )
 
 // example
-func Example() {
+func Main() {
 	// -- loop --
 	var numbers = []int{}
 	for i := 1; i < 11; i++ {

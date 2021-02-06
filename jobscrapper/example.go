@@ -1,4 +1,4 @@
-package main
+package jobscrapper
 
 import (
 	"encoding/csv"
@@ -22,7 +22,8 @@ type extractedJob struct {
 
 const baseURL string = "https://kr.indeed.com/취업?q=python&limit=50"
 
-func main() {
+// Main
+func Main() {
 	var jobs []extractedJob
 	totalPages := getPages()
 	fmt.Println(totalPages)
