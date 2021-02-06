@@ -1,4 +1,4 @@
-package main
+package exmaple
 
 import (
 	"fmt"
@@ -9,7 +9,8 @@ import (
 	"github.com/kiosk123/golang/urlcheker"
 )
 
-func main() {
+// example
+func Example() {
 	// -- loop --
 	var numbers = []int{}
 	for i := 1; i < 11; i++ {

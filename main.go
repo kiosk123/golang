@@ -2,48 +2,85 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"strconv"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
-type result struct {
-	url    string
-	status string
+type extractedJob struct {
+	id       string
+	title    string
+	location string
+	salary   string
+	summary  string
 }
+
+const baseURL string = "https://kr.indeed.com/취업?q=python&limit=50"
 
 func main() {
-	urls := []string{
-		"https://www.naver.com",
-		"https://www.daum.net/",
-		"https://www.nate.com/",
-		"https://www.saramin.co.kr/zf_user/",
-		"https://github.com/",
+	totalPages := getPages()
+	fmt.Println(totalPages)
+
+	for i := 0; i < totalPages; i++ {
+		getPage(i)
 	}
-
-	resultMap := make(map[string]string)
-	c := make(chan result)
-
-	for _, url := range urls {
-		go hitURL(url, c)
-	}
-
-	for i := 0; i < len(urls); i++ {
-		result := <-c
-		resultMap[result.url] = result.status
-	}
-
-	for url, status := range resultMap {
-		fmt.Println(url, status)
-	}
-
 }
 
-// channel에 전송만 가능하고 받기는 불가능 : send only
-func hitURL(url string, c chan<- result) {
-	// fmt.Println(<-result)
-	resp, err := http.Get(url)
-	status := "OK"
-	if err != nil || resp.StatusCode >= 400 {
-		status = "Fail"
+func getPage(page int) {
+	pageUrl := baseURL + "&start=" + strconv.Itoa(page*50)
+	fmt.Println("Requesting", pageUrl)
+	res, err := http.Get(pageUrl)
+	checkErr(err)
+	checkCode(res)
+
+	defer res.Body.Close()
+
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+	checkErr(err)
+
+	searchCards := doc.Find(".jobsearch-SerpJobCard")
+
+	searchCards.Each(func(i int, card *goquery.Selection) {
+		id, _ := card.Attr("data-jk")
+		title := card.Find(".title>a").Text()
+		location := card.Find(".sjcl").Text()
+		fmt.Println(id, title, location)
+	})
+}
+
+func getPages() int {
+	res, err := http.Get(baseURL)
+	pages := 0
+	checkErr(err)
+	checkCode(res)
+
+	defer res.Body.Close()
+
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+
+	checkErr(err)
+	doc.Find(".pagination").Each(func(i int, s *goquery.Selection) {
+		// fmt.Println(s.Html())
+		pages = s.Find("a").Length()
+	})
+
+	return pages
+}
+
+func checkErr(err error) {
+	if err != nil {
+		log.Fatalln(err)
 	}
-	c <- result{url: url, status: status}
+}
+
+func checkCode(res *http.Response) {
+	if res.StatusCode != 200 {
+		log.Fatalln("Request failed with Status :", res.StatusCode)
+	}
+}
+
+func cleanString(str string) string {
+
 }
