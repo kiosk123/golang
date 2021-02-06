@@ -7,10 +7,19 @@
 
 ## 설치
 
-**go query** [설치](https://github.com/PuerkitoBio/goquery) - GOPATH가 가르키는 경로로 이동후 명령 실행
+GOPATH가 가르키는 경로로 이동후 명령 실행  
+**go query** [프로젝트](https://github.com/PuerkitoBio/goquery)
 
 ```bash
 cd $GOPATH
 go get github.com/PuerkitoBio/goquery
 ```
+
+**echo** [프로젝트](https://github.com/labstack/echo)
+```bash
+cd $GOPATH
+go get github.com/labstack/echo
+```
+
+go fullstack 프레임워크 [buffalo](https://gobuffalo.io/en/)
 
