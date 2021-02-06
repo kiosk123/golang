@@ -42,8 +42,7 @@ func handlePost(c echo.Context) error {
 	term = scrapper.CleanString(term)
 	term = strings.ToLower(term)
 	fmt.Println("term is :", term)
-	search := []rune(term)
-	scrapper.Scrape(search)
+	scrapper.Scrape(term)
 
 	return c.Attachment(fileName, fileName) //file download
 }
