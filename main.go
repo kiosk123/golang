@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 type result struct {
 	url    string
@@ -22,9 +25,12 @@ func main() {
 		go hitURL(url, c)
 	}
 
+	for i := 0; i < len(urls); i++ {
+		fmt.Println(<-c)
+	}
 }
 
-// channel 전송만 가능하고 받기는 불가능 : send only
+// channel에 전송만 가능하고 받기는 불가능 : send only
 func hitURL(url string, c chan<- result) {
 	// fmt.Println(<-result)
 	resp, err := http.Get(url)
