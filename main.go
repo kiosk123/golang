@@ -19,6 +19,7 @@ func main() {
 		"https://github.com/",
 	}
 
+	resultMap := make(map[string]string)
 	c := make(chan result)
 
 	for _, url := range urls {
@@ -26,8 +27,14 @@ func main() {
 	}
 
 	for i := 0; i < len(urls); i++ {
-		fmt.Println(<-c)
+		result := <-c
+		resultMap[result.url] = result.status
 	}
+
+	for url, status := range resultMap {
+		fmt.Println(url, status)
+	}
+
 }
 
 // channel에 전송만 가능하고 받기는 불가능 : send only
